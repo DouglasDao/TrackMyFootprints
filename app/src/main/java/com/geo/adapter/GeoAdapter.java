@@ -1,28 +1,22 @@
 package com.geo.adapter;
 
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.geo.R;
 import com.geo.adapter.ViewHolder.GeoViewHolder;
+import com.geo.model.GeoData;
 
-/**
- * Created by Dell on 20-12-2017.
- */
+import java.util.List;
 
-public class GeoAdapter extends RecyclerView.Adapter<GeoViewHolder>{
+public class GeoAdapter extends BaseRecyclerAdapter<GeoData,GeoViewHolder>{
+
+    public GeoAdapter(List<GeoData> data) {
+        super(data);
+    }
 
     @Override
     public GeoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(GeoViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
+        return new GeoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.inflate_location_details, parent, false));
     }
 }

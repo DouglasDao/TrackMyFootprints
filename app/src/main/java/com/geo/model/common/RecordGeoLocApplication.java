@@ -7,10 +7,6 @@ import com.geo.model.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
 
-/**
- * Created by Dell on 20-12-2017.
- */
-
 public class RecordGeoLocApplication extends Application {
 
     private DaoSession daoSession;

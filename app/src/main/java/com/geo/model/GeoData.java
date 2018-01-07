@@ -3,9 +3,6 @@ package com.geo.model;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 
-/**
- * Created by Dell on 20-12-2017.
- */
 @Entity
 public class GeoData {
     private String latit;
