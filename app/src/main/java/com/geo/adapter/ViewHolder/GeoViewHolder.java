@@ -12,6 +12,9 @@ public class GeoViewHolder extends BaseViewHolder<GeoData> {
 
     @BindView(R.id.tv_geo_coordinates)
     AppCompatTextView mGeoCoordinates;
+    @BindView(R.id.tv_place_name)
+    AppCompatTextView mPlaceName;
+
 
     public GeoViewHolder(View itemView) {
         super(itemView);
@@ -20,6 +23,7 @@ public class GeoViewHolder extends BaseViewHolder<GeoData> {
     @Override
     void populateData() {
         mGeoCoordinates.setText(data.getLatit() + " , " + data.getLongit());
+        mPlaceName.setText(data.getAddress());
     }
 
 }

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.geo.R;
 import com.geo.adapter.GeoAdapter;
@@ -26,9 +25,8 @@ public class GeoLaunchActivity extends BaseActivity implements IGeoLaunchView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Geo", "GeoLaunchActi");
         mRvGeoCoordinates.setLayoutManager(new LinearLayoutManager(this));
-        iGeoLaunchPresenter = new GeoLaunchPresenter(this);
+        iGeoLaunchPresenter = new GeoLaunchPresenter(getActivity(),this);
         iGeoLaunchPresenter.onCreatePresenter(getIntent().getExtras());
     }
 

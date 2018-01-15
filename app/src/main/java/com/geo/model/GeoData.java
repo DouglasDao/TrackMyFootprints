@@ -7,11 +7,13 @@ import org.greenrobot.greendao.annotation.Generated;
 public class GeoData {
     private String latit;
     private String longit;
+    private String address;
 
-    @Generated(hash = 253891504)
-    public GeoData(String latit, String longit) {
+    @Generated(hash = 132852881)
+    public GeoData(String latit, String longit, String address) {
         this.latit = latit;
         this.longit = longit;
+        this.address = address;
     }
 
     @Generated(hash = 474607495)
@@ -32,5 +34,13 @@ public class GeoData {
 
     public void setLongit(String longit) {
         this.longit = longit;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

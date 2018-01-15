@@ -6,12 +6,13 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="12dp">
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:padding="@dimen/dp4">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_Location"
@@ -22,7 +23,16 @@
             android:layout_marginTop="@dimen/dp8"
             android:src="@drawable/ic_location" />
 
+        <View
+            android:id="@+id/space_1"
+            android:layout_width="16dp"
+            android:layout_height="40dp"
+            android:background="@color/colorAccent"
+            android:layout_toEndOf="@+id/iv_Location"
+            android:layout_toStartOf="@id/geo_layout" />
+
         <LinearLayout
+            android:id="@+id/geo_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iv_Location"
@@ -34,22 +44,28 @@
                 android:id="@+id/tv_place_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_weight="@integer/w0.5"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:layout_weight="@integer/w0.5"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorWhite" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_geo_coordinates"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_weight="@integer/w0.5"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:layout_weight="@integer/w0.5"
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/space_2"
+            android:layout_width="16dp"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@+id/geo_layout"
+            android:layout_toStartOf="@id/iv_delete" />
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_delete"

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -31,24 +33,53 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class GeoLaunchPresenter extends BasePresenter implements IGeoLaunchPresenter {
 
     private static final int LOCATION_REQUEST_CODE = 101;
     private static final int GPS_ENABLE_REQUEST_CODE = 100;
     private IGeoLaunchView iGeoLaunchView;
+    private Context mContext;
     private LocationRequest mLocationRequest;
     private LocationManager mLocationManager;
     private GeoAdapter mGeoAdapter;
     private FusedLocationProviderClient mLocationProviderClient;
     private List<GeoData> geoList = new ArrayList<>();
+    private GeoData geoData = new GeoData();
 
+    /**
+     * Location Result from Location Callback for Periodic Updates
+     */
 
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            Location lastLocation = locationResult.getLastLocation();
+            if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                geoData.setLatit(Double.toString(lastLocation.getLatitude()));
+                geoData.setLongit(Double.toString(lastLocation.getLongitude()));
+                getAddressFromLocation(lastLocation.getLatitude(), lastLocation.getLongitude());
+                geoList.add(geoData);
+                if (mGeoAdapter == null) {
+                    mGeoAdapter = new GeoAdapter(geoList);
+                    iGeoLaunchView.setAdapter(mGeoAdapter);
+                } else {
+                    mGeoAdapter.resetItems(geoList);
+                }
+            } else {
+                showGPSDisabledDialog();
+            }
+        }
+    };
 
-    public GeoLaunchPresenter(IGeoLaunchView iGeoLaunchView) {
+    public GeoLaunchPresenter(Context context, IGeoLaunchView iGeoLaunchView) {
         super(iGeoLaunchView);
+        this.mContext = context;
         this.iGeoLaunchView = iGeoLaunchView;
     }
 
@@ -59,8 +90,8 @@ public class GeoLaunchPresenter extends BasePresenter implements IGeoLaunchPrese
     }
 
     /**
-     *  Creating Custom Location Request with Fast Interval (delay)
-     * */
+     * Creating Custom Location Request with Fast Interval (delay)
+     */
 
     private LocationRequest setLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -82,34 +113,8 @@ public class GeoLaunchPresenter extends BasePresenter implements IGeoLaunchPrese
     }
 
     /**
-     *  Location Result from Location Callback for Periodic Updates
-     * */
-
-    private LocationCallback locationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            Location lastLocation = locationResult.getLastLocation();
-            if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                GeoData geoData = new GeoData();
-                geoData.setLatit(Double.toString(lastLocation.getLatitude()));
-                geoData.setLongit(Double.toString(lastLocation.getLongitude()));
-                geoList.add(geoData);
-                if (mGeoAdapter == null) {
-                    mGeoAdapter = new GeoAdapter(geoList);
-                    iGeoLaunchView.setAdapter(mGeoAdapter);
-                } else {
-                    mGeoAdapter.resetItems(geoList);
-                }
-            } else {
-                showGPSDiabledDialog();
-            }
-        }
-    };
-
-    /**
      * Getting Periodic Geolocation Updates using FusedLocationProviderClient
-     * */
+     */
 
     private void getPeriodicLocations() {
         if (mLocationManager != null) {
@@ -132,8 +137,37 @@ public class GeoLaunchPresenter extends BasePresenter implements IGeoLaunchPrese
                     iGeoLaunchView.showNetworkMessage();
                 }
             } else {
-                showGPSDiabledDialog();
+                showGPSDisabledDialog();
             }
+        }
+    }
+
+    private void getAddressFromLocation(double latitude, double longitude) {
+
+        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+
+        try {
+            if (Geocoder.isPresent()) {
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                if (addresses != null && addresses.size() > 0) {
+                    Address fetchedAddress = addresses.get(0);
+                    StringBuilder strAddress = new StringBuilder();
+                    for (int i = 0; i <= fetchedAddress.getMaxAddressLineIndex(); i++) {
+                        strAddress.append(fetchedAddress.getAddressLine(i)).append(" ");
+                    }
+                    geoData.setAddress(strAddress.toString());
+
+                } else {
+                    showSnackBar("Searching Current Address");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showSnackBar("No Network Found");
+            Log.d(TAG, "No Network");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            showSnackBar("No Location Name Found..!");
         }
     }
 
@@ -172,7 +206,7 @@ public class GeoLaunchPresenter extends BasePresenter implements IGeoLaunchPrese
         }
     }
 
-    private void showGPSDiabledDialog() {
+    private void showGPSDisabledDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(iGeoLaunchView.getActivity());
         builder.setTitle("GPS Disabled");
         builder.setMessage("Gps is disabled, in order to use the application properly you need to enable GPS of your device");
