@@ -1,3 +1,9 @@
 # TrackGeoLocation
 
-[Screenshot](https://user-images.githubusercontent.com/13155538/34652699-d1b6b064-f407-11e7-9f0d-b30bc91fd27d.png)
+Receiving Location Result from ROOM
+
+![Alt text](https://drive.google.com/open?id=11_5bAb5G6p6JicmXtzJ2dr8YIh65JKAl "")
+
+User Interaction for Enabling Location settings
+
+![Alt text](https://drive.google.com/open?id=1t0B-fBWO6LM_GIuFxdqWf4Z5aEVKInav "")
