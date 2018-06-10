@@ -65,6 +65,7 @@ public class GeoLaunchViewModel extends BaseViewModel implements IGeoLaunchViewM
     private GnssStatus.Callback mGpsUpdate;
     private GeoDataRepo geoDataRepo;
     private LiveData<List<GeoData>> getLocations;
+
     /**
      * Location Result from Location Callback for Periodic Updates
      */
@@ -88,6 +89,12 @@ public class GeoLaunchViewModel extends BaseViewModel implements IGeoLaunchViewM
             }
         }
     };
+
+    public GeoLaunchViewModel(@NonNull Application application) {
+        super(application);
+        geoDataRepo = new GeoDataRepo(application);
+        getLocations = geoDataRepo.getLocations();
+    }
 
     public GeoLaunchViewModel(@NonNull Application application, IGeoLaunchView iGeoLaunchView) {
         super(iGeoLaunchView.getActivity().getApplication(), iGeoLaunchView);

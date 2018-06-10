@@ -33,7 +33,7 @@ public class GeoLaunchActivity extends BaseActivity implements IGeoLaunchView {
         mRvGeoCoordinates.setLayoutManager(new LinearLayoutManager(this));
 
         /**
-         *  Register your viewmodels
+         *  Register your ViewModel
          */
 
         geoDataViewModel = ViewModelProviders.of(this).get(GeoLaunchViewModel.class);
