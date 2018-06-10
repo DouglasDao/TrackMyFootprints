@@ -13,11 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
-import com.geo.presenter.ipresenter.IPresenter;
 import com.geo.util.CodeSnippet;
 import com.geo.view.iview.IView;
+import com.geo.viewmodel.iviewmodel.IViewModel;
 
 import butterknife.ButterKnife;
 
@@ -27,11 +28,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     protected View mParentView;
     protected CodeSnippet mCodeSnippet;
     ProgressDialog pDialog;
-    private IPresenter iPresenter;
+    private IViewModel iViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayoutId());
         injectViews();
     }
@@ -52,41 +54,53 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     @Override
     protected void onStart() {
         super.onStart();
-        if (iPresenter != null) iPresenter.onStartPresenter();
+        if (iViewModel != null) iViewModel.onStartViewModel();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (iPresenter != null) iPresenter.onStopPresenter();
+        if (iViewModel != null) iViewModel.onStopViewModel();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (iPresenter != null) iPresenter.onPausePresenter();
+        if (iViewModel != null) iViewModel.onPauseViewModel();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (iPresenter != null) iPresenter.onResumePresenter();
+        if (iViewModel != null) iViewModel.onResumeViewModel();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (iPresenter != null) iPresenter.onDestroyPresenter();
+        if (iViewModel != null) iViewModel.onDestroyViewModel();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (iViewModel != null) iViewModel.onSaveInstanceStateViewModel(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (iViewModel != null) iViewModel.onRestoreInstanceStateViewModel(savedInstanceState);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (iPresenter != null) iPresenter.onActivityResultPresenter(requestCode, resultCode, data);
+        if (iViewModel != null) iViewModel.onActivityResultViewModel(requestCode, resultCode, data);
     }
 
-    public void bindPresenter(IPresenter iPresenter) {
-        this.iPresenter = iPresenter;
+    public void bindViewModel(IViewModel iViewModel) {
+        this.iViewModel = iViewModel;
     }
 
     @Override

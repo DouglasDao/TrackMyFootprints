@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.geo.presenter.ipresenter.IPresenter;
 import com.geo.util.CodeSnippet;
+import com.geo.viewmodel.iviewmodel.IViewModel;
 
 public interface IView {
 
@@ -21,7 +21,7 @@ public interface IView {
 
     void showNetworkMessage();
 
-    void bindPresenter(IPresenter iPresenter);
+    void bindViewModel(IViewModel iViewModel);
 
     CodeSnippet getCodeSnippet();
 

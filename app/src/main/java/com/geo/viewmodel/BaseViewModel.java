@@ -1,56 +1,70 @@
-package com.geo.presenter;
+package com.geo.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
-import com.geo.presenter.ipresenter.IPresenter;
 import com.geo.view.iview.IView;
+import com.geo.viewmodel.iviewmodel.IViewModel;
 
-public abstract class BasePresenter implements IPresenter {
+public abstract class BaseViewModel extends AndroidViewModel implements IViewModel {
 
     protected String TAG = getClass().getSimpleName();
     protected View mParentView;
     private IView iView;
 
-    public BasePresenter() {
-
+    public BaseViewModel(Application application) {
+        super(application);
     }
 
-    public BasePresenter(IView iView) {
+    public BaseViewModel(Application application, IView iView) {
+        super(application);
         this.iView = iView;
-        iView.bindPresenter(this);
+        iView.bindViewModel(this);
         mParentView = iView.getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
     }
 
     @Override
-    public void onStartPresenter() {
+    public void onStartViewModel() {
 
     }
 
     @Override
-    public void onStopPresenter() {
+    public void onStopViewModel() {
 
     }
 
     @Override
-    public void onPausePresenter() {
+    public void onPauseViewModel() {
 
     }
 
     @Override
-    public void onResumePresenter() {
+    public void onResumeViewModel() {
 
     }
 
     @Override
-    public void onDestroyPresenter() {
+    public void onDestroyViewModel() {
 
     }
 
     @Override
-    public void onActivityResultPresenter(int requestCode, int resultCode, Intent data) {
+    public void onActivityResultViewModel(int requestCode, int resultCode, Intent data) {
+
+    }
+
+    @Override
+    public void onSaveInstanceStateViewModel(Bundle data) {
+
+    }
+
+    @Override
+    public void onRestoreInstanceStateViewModel(Bundle data) {
 
     }
 

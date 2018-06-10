@@ -15,15 +15,20 @@ public class GeoViewHolder extends BaseViewHolder<GeoData> {
     @BindView(R.id.tv_place_name)
     AppCompatTextView mPlaceName;
 
-
     public GeoViewHolder(View itemView) {
         super(itemView);
     }
 
     @Override
     void populateData() {
-        mGeoCoordinates.setText(data.getLatit() + " , " + data.getLongit());
-        mPlaceName.setText(data.getAddress());
+        try {
+            if (data.getLatit() != null && data.getLongit() != null)
+                mGeoCoordinates.setText(data.getLatit() + " , " + data.getLongit());
+            if (!data.getAddress().isEmpty())
+                mPlaceName.setText(data.getAddress());
+        } catch (Exception ignored) {
+
+        }
     }
 
 }

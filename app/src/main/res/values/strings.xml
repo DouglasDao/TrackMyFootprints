@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">RecordGeoLocation</string>
+    <string name="app_name">TrackGeoLocation</string>
+    <string name="no_network">No Network Found</string>
 </resources>
