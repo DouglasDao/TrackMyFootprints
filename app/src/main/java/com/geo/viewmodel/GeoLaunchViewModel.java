@@ -58,6 +58,7 @@ public class GeoLaunchViewModel extends BaseViewModel implements IGeoLaunchViewM
     private GeoAdapter mGeoAdapter;
     private FusedLocationProviderClient mLocationProviderClient;
     private GeoData geoData;
+    private GeoData geoDataDel;
     private String address;
     private Double latitude;
     private Double longitude;
@@ -82,7 +83,8 @@ public class GeoLaunchViewModel extends BaseViewModel implements IGeoLaunchViewM
                 geoData = new GeoData(latitude, longitude, address);
                 geoData.setLatit(latitude);
                 geoData.setLongit(longitude);
-                if (!address.isEmpty() && address != null) geoData.setAddress(address);
+                if (!address.isEmpty()) geoData.setAddress(address);
+                geoDataDel = geoData;
                 insertLatLngWithAddress(geoData);
             } else {
                 getPeriodicLocations();
@@ -307,5 +309,15 @@ public class GeoLaunchViewModel extends BaseViewModel implements IGeoLaunchViewM
                         }
                     }
                 });
+    }
+
+    @Override
+    public void delete(int geoData) {
+        geoDataRepo.delete(geoData);
+    }
+
+    @Override
+    public void deleteAll() {
+        geoDataRepo.deleteAll();
     }
 }

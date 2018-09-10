@@ -1,15 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.geo.view.GeoLaunchActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="#424242"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:weightSum="1">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="@integer/w0.8"
+                android:text="@string/location_history"
+                android:textSize="@dimen/sp_24"
+                app:fontFamily="@font/cac_champagne" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/w0.2"
+                android:src="@drawable/ic_waste"
+                android:tooltipText="Delete All"
+                tools:targetApi="o" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_geo_coordinates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/my_toolbar"
+        android:text="Hello World!"
         android:orientation="vertical"
-        android:text="Hello World!"/>
+        app:fontFamily="@font/cac_champagne" />
 
 </RelativeLayout>

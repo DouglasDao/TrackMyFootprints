@@ -1,5 +1,6 @@
 package com.geo.adapter;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -16,7 +17,7 @@ public class GeoAdapter extends BaseRecyclerAdapter<GeoData,GeoViewHolder>{
     }
 
     @Override
-    public GeoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GeoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new GeoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.inflate_location_details, parent, false));
     }
 }

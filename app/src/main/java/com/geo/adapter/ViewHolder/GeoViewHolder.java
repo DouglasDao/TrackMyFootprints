@@ -1,6 +1,7 @@
 package com.geo.adapter.ViewHolder;
 
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 
 import com.geo.R;
@@ -14,7 +15,8 @@ public class GeoViewHolder extends BaseViewHolder<GeoData> {
     AppCompatTextView mGeoCoordinates;
     @BindView(R.id.tv_place_name)
     AppCompatTextView mPlaceName;
-
+    @BindView(R.id.iv_loc_pos)
+    AppCompatTextView mId;
     public GeoViewHolder(View itemView) {
         super(itemView);
     }
@@ -24,10 +26,12 @@ public class GeoViewHolder extends BaseViewHolder<GeoData> {
         try {
             if (data.getLatit() != null && data.getLongit() != null)
                 mGeoCoordinates.setText(data.getLatit() + " , " + data.getLongit());
-            if (!data.getAddress().isEmpty())
+            if (data.getAddress() != null && !data.getAddress().isEmpty())
                 mPlaceName.setText(data.getAddress());
-        } catch (Exception ignored) {
 
+            mId.setText("" + data.getId());
+        } catch (Exception e) {
+            Log.e(TAG, "Error : " + e.getMessage());
         }
     }
 

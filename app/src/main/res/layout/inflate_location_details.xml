@@ -36,27 +36,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iv_Location"
-            android:layout_toStartOf="@id/iv_delete"
+            android:layout_toStartOf="@id/iv_loc_pos"
             android:orientation="vertical"
             android:weightSum="1">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_place_name"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="@integer/w0.5"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/w0.6"
                 android:gravity="center_horizontal"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
+                app:fontFamily="@font/cac_champagne"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/colorWhite" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_geo_coordinates"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="@integer/w0.5"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/w0.4"
                 android:gravity="center_horizontal"
+                android:textColor="@color/colorMaroon"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorWhite" />
+                app:fontFamily="monospace" />
 
         </LinearLayout>
 
@@ -65,27 +69,19 @@
             android:layout_width="16dp"
             android:layout_height="40dp"
             android:layout_toEndOf="@+id/geo_layout"
-            android:layout_toStartOf="@id/iv_delete" />
+            android:layout_toStartOf="@id/iv_loc_pos" />
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/iv_delete"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/iv_loc_pos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/dp12"
             android:layout_marginStart="@dimen/dp12"
-            android:layout_marginTop="@dimen/dp8"
-            android:src="@drawable/ic_delete" />
+            android:layout_marginTop="@dimen/dp8" />
 
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
 
-    <!--    <android.support.v7.widget.Toolbar
-                android:id="@+id/my_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_alignParentTop="true"
-                android:background="?attr/colorControlActivated"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />-->
+
