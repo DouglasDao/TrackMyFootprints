@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.geo.view.GeoLaunchActivity">
+    tools:context="com.footprints.view.GeoLaunchActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -37,10 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="@integer/w0.2"
-                android:src="@drawable/ic_waste"
+                android:src="@drawable/ic_waste_black"
                 android:tooltipText="Delete All"
                 tools:targetApi="o" />
-
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
