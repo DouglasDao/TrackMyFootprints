@@ -6,4 +6,4 @@ Receiving Location Result from ROOM
 
 User Interaction for Enabling Location settings
 
-![Alt text](https://drive.google.com/open?id=1dzt-HLIT1JepI5PHgAo1PVK7LAAVWWY4 "")
+![Alt text](https://drive.google.com/file/d/1dzt-HLIT1JepI5PHgAo1PVK7LAAVWWY4/view "")
