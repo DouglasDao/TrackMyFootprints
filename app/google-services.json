@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "983604390274",
+    "firebase_url": "https://geo-footprints.firebaseio.com",
+    "project_id": "geo-footprints",
+    "storage_bucket": "geo-footprints.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983604390274:android:b53eea4f358f996b",
+        "android_client_info": {
+          "package_name": "com.footprints"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983604390274-2i1s14t0cimu2u07mod7nr6pv7n99rgb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.footprints",
+            "certificate_hash": "42695930f27b78ab34afe18d65bd65d5c0cd0f33"
+          }
+        },
+        {
+          "client_id": "983604390274-pcr8nkv0994u8befh5o1675gqlt36t6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2C0k5f20karoSdFccQeyQhZotA93x7ac"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983604390274-pcr8nkv0994u8befh5o1675gqlt36t6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

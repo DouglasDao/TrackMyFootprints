@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">TrackGeoLocation</string>
-    <string name="no_network">No Network Found</string>
+    <string name="no_network">Enable Network to receive address</string>
     <string name="location_history">Location History</string>
 </resources>

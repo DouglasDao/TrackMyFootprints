@@ -39,10 +39,9 @@ public class GeoLaunchActivity extends BaseActivity implements IGeoLaunchView, S
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideKeyboard(this);
         mRvGeoCoordinates.setLayoutManager(new LinearLayoutManager(this));
         mIvDelete.setImageResource(R.drawable.ic_waste_black);
-        SwipeItem swipeItem = new SwipeItem(0, ItemTouchHelper.LEFT, GeoLaunchActivity.this);
+        SwipeItem swipeItem = new SwipeItem(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(swipeItem).attachToRecyclerView(mRvGeoCoordinates);
         /**
          *  Register your ViewModel
@@ -71,7 +70,6 @@ public class GeoLaunchActivity extends BaseActivity implements IGeoLaunchView, S
                 }
             }
         });
-
 
         iGeoLaunchViewModel = new GeoLaunchViewModel(getActivity().getApplication(), this);
         iGeoLaunchViewModel.onCreateViewModel(getIntent().getExtras());

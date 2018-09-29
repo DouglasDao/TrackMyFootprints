@@ -1,6 +1,8 @@
 package com.footprints;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 
 public class TrackGeoLocationApplication extends Application {
@@ -25,4 +27,9 @@ public class TrackGeoLocationApplication extends Application {
 
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }

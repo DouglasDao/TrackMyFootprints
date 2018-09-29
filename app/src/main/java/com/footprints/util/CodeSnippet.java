@@ -118,7 +118,7 @@ public class CodeSnippet {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(mContext, mContext.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.no_network), Toast.LENGTH_LONG).show();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

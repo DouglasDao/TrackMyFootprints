@@ -7,6 +7,9 @@ import android.view.View;
 import com.footprints.R;
 import com.footprints.model.GeoData;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 
 public class GeoViewHolder extends BaseViewHolder<GeoData> {
@@ -17,6 +20,9 @@ public class GeoViewHolder extends BaseViewHolder<GeoData> {
     AppCompatTextView mPlaceName;
     @BindView(R.id.iv_loc_pos)
     AppCompatTextView mId;
+    @BindView(R.id.iv_loc_date)
+    AppCompatTextView mLocationDateTime;
+
     public GeoViewHolder(View itemView) {
         super(itemView);
     }
@@ -30,6 +36,7 @@ public class GeoViewHolder extends BaseViewHolder<GeoData> {
                 mPlaceName.setText(data.getAddress());
 
             mId.setText("" + data.getId());
+            mLocationDateTime.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date()));
         } catch (Exception e) {
             Log.e(TAG, "Error : " + e.getMessage());
         }
