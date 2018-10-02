@@ -86,6 +86,7 @@
                 android:id="@+id/iv_loc_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/paranoid"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp8"
                 android:gravity="end"

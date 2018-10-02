@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.footprints.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class CodeSnippet {
     private String AM = "AM";
     private String TAG = getClass().getSimpleName();
     private Context mContext;
-
+    private FirebaseAuth mFirebaseAuth;
     public CodeSnippet() {
     }
 
@@ -125,4 +126,10 @@ public class CodeSnippet {
         return null;
     }
 
+    public FirebaseAuth getFirebaseAuth() {
+        if (mFirebaseAuth == null) {
+            mFirebaseAuth = FirebaseAuth.getInstance();
+        }
+        return mFirebaseAuth;
+    }
 }

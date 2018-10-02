@@ -194,11 +194,16 @@ public class SharedPref {
      */
 
     public String getStringValue(Context context, String key) {
-        return getPreferenceInstance(context).getString(key, null);
+        return getPreferenceInstance(context).getString(key, "");
     }
 
 
     public Long getLongValue(Context context, String key) {
         return getPreferenceInstance(context).getLong(key, -1);
+    }
+
+    public void clearSharedPref() {
+        preference = null;
+        sharedPref = null;
     }
 }

@@ -1,30 +1,15 @@
 package com.footprints;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 
-public class TrackGeoLocationApplication extends Application {
-
-    private static TrackGeoLocationApplication mAppController;
-
-    public static TrackGeoLocationApplication getInstance() {
-        return mAppController;
-    }
+public class TrackGeoLocationApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        bindDao();
-    }
-
-    private void bindDao() {
-
-    }
-
-    public void ClearDao() {
-
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.footprints.viewmodel.iviewmodel;
 
 
-public interface IGeoLaunchViewModel extends IViewModel {
+public interface IGeoLocationViewModel extends IViewModel {
     void delete(int geoData);
 
     void deleteAll();

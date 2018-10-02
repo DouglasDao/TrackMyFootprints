@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-
-    tools:context="com.footprints.view.GeoLaunchActivity">
+    tools:context="com.footprints.view.GeoLocationActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="@dimen/dp72"
         android:layout_alignParentTop="true"
         android:background="#424242"
         android:fitsSystemWindows="true"
@@ -22,26 +21,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:orientation="horizontal"
             android:weightSum="1">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_pic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/w0.2" />
+
+            <Space
+                android:layout_width="@dimen/dp12"
+                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.AppCompatTextView
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_profile_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="@integer/w0.8"
-                android:text="@string/location_history"
-                android:textSize="@dimen/sp_24"
-                app:fontFamily="@font/cac_champagne" />
+                android:layout_weight="@integer/w0.5"
+                android:textSize="@dimen/sp_12"
+                app:fontFamily="@font/antaro" />
+
+            <Space
+                android:layout_width="@dimen/dp12"
+                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/iv_delete"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="@integer/w0.2"
-                android:src="@drawable/ic_waste_black"
-                android:tooltipText="Delete All"
-                tools:targetApi="o" />
+                android:layout_weight="@integer/w0.1"
+                android:src="@drawable/ic_waste_black" />
+
+            <Space
+                android:layout_width="@dimen/dp12"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_logout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/w0.1"
+                android:src="@drawable/ic_logout" />
+
+
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>

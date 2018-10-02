@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/iv_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ic_login"
+        android:padding="@dimen/dp48"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/iv_pwd"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_google_signin"
+            android:layout_width="@dimen/dp140"
+            android:layout_height="0dp"
+            android:layout_weight="@integer/w0.2"
+            android:background="@drawable/shape_square"
+            android:padding="@dimen/dp12"
+            android:src="@drawable/ic_google" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="@integer/w0.1" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_mob_auth"
+            android:layout_width="@dimen/dp140"
+            android:layout_height="0dp"
+            android:layout_weight="@integer/w0.2"
+            android:background="@drawable/shape_square"
+            android:padding="@dimen/dp12"
+            android:src="@drawable/ic_authentication" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -2,4 +2,5 @@
     <string name="app_name">TrackGeoLocation</string>
     <string name="no_network">Enable Network to receive address</string>
     <string name="location_history">Location History</string>
+    <string name="client_id">983604390274-pcr8nkv0994u8befh5o1675gqlt36t6j.apps.googleusercontent.com</string>
 </resources>

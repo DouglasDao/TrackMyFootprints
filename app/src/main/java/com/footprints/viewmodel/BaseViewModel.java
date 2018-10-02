@@ -10,13 +10,14 @@ import android.view.View;
 
 import com.footprints.view.iview.IView;
 import com.footprints.viewmodel.iviewmodel.IViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public abstract class BaseViewModel extends AndroidViewModel implements IViewModel {
 
     protected String TAG = getClass().getSimpleName();
     protected View mParentView;
     private IView iView;
-
+    private FirebaseAuth mFirebaseAuth;
     public BaseViewModel(Application application) {
         super(application);
     }
@@ -79,6 +80,13 @@ public abstract class BaseViewModel extends AndroidViewModel implements IViewMod
             snackbar.setActionTextColor(Color.RED);
             snackbar.show();
         }
+    }
+
+    public FirebaseAuth getFirebaseAuth() {
+        if (mFirebaseAuth == null) {
+            return mFirebaseAuth = FirebaseAuth.getInstance();
+        }
+        return mFirebaseAuth;
     }
 
     /*protected String getStringRes(int res){

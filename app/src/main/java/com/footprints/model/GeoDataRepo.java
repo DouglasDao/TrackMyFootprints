@@ -20,7 +20,6 @@ public class GeoDataRepo {
     private GeoDataDao geoDataDao;
     public int locationSize;
 
-
     public GeoDataRepo(Application application) {
         geoDataDao = AppDatabase.getInstance(application).getGeoDataDao();
         mLocations = geoDataDao.getGeoData();
@@ -131,6 +130,5 @@ public class GeoDataRepo {
             return null;
         }
     }
-
 
 }

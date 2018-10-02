@@ -26,5 +26,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return mController;
     }
 
-    public abstract GeoDataDao getGeoDataDao();
+    abstract GeoDataDao getGeoDataDao();
 }

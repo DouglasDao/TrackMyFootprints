@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -8,8 +8,6 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="dp0">0dp</dimen>
-    <dimen name="dp0.5">0.5dp</dimen>
-    <dimen name="dp0.8">0.8dp</dimen>
     <dimen name="dp1">1dp</dimen>
     <dimen name="dp2">2dp</dimen>
     <dimen name="dp3">3dp</dimen>
@@ -70,29 +68,30 @@
     <dimen name="dp248">248dp</dimen>
 
     <item name="w0" type="integer">0</item>
-    <item name="w0.1" type="integer">0.1</item>
-    <item name="w0.15" type="integer">0.15</item>
-    <item name="w0.2" type="integer">0.2</item>
-    <item name="w0.3" type="integer">0.3</item>
-    <item name="w0.35" type="integer">0.35</item>
-    <item name="w0.36" type="integer">0.36</item>
-    <item name="w0.37" type="integer">0.37</item>
-    <item name="w0.38" type="integer">0.38</item>
-    <item name="w0.39" type="integer">0.39</item>
-    <item name="w0.4" type="integer">0.4</item>
-    <item name="w0.45" type="integer">0.45</item>
-    <item name="w0.5" type="integer">0.5</item>
-    <item name="w0.55" type="integer">0.55</item>
-    <item name="w0.6" type="integer">0.6</item>
-    <item name="w0.65" type="integer">0.65</item>
-    <item name="w0.7" type="integer">0.7</item>
-    <item name="w0.8" type="integer">0.8</item>
-    <item name="w0.9" type="integer">0.9</item>
+    <item name="w0.1" type="integer" tools:ignore="MissingDefaultResource">0.1</item>
+    <item name="w0.15" type="integer" tools:ignore="MissingDefaultResource">0.15</item>
+    <item name="w0.2" type="integer" tools:ignore="MissingDefaultResource">0.2</item>
+    <item name="w0.3" type="integer" tools:ignore="MissingDefaultResource">0.3</item>
+    <item name="w0.35" type="integer" tools:ignore="MissingDefaultResource">0.35</item>
+    <item name="w0.36" type="integer" tools:ignore="MissingDefaultResource">0.36</item>
+    <item name="w0.37" type="integer" tools:ignore="MissingDefaultResource">0.37</item>
+    <item name="w0.38" type="integer" tools:ignore="MissingDefaultResource">0.38</item>
+    <item name="w0.39" type="integer" tools:ignore="MissingDefaultResource">0.39</item>
+    <item name="w0.4" type="integer" tools:ignore="MissingDefaultResource">0.4</item>
+    <item name="w0.45" type="integer" tools:ignore="MissingDefaultResource">0.45</item>
+    <item name="w0.5" type="integer" tools:ignore="MissingDefaultResource">0.5</item>
+    <item name="w0.55" type="integer" tools:ignore="MissingDefaultResource">0.55</item>
+    <item name="w0.6" type="integer" tools:ignore="MissingDefaultResource">0.6</item>
+    <item name="w0.65" type="integer" tools:ignore="MissingDefaultResource">0.65</item>
+    <item name="w0.7" type="integer" tools:ignore="MissingDefaultResource">0.7</item>
+    <item name="w0.8" type="integer" tools:ignore="MissingDefaultResource">0.8</item>
+    <item name="w0.9" type="integer" tools:ignore="MissingDefaultResource">0.9</item>
     <item name="minus10" type="integer">-10px</item>
 
     <!-- Font Sizes -->
 
     <dimen name="sp_04">4sp</dimen>
+    <dimen name="sp_06">6sp</dimen>
     <dimen name="sp_08">8sp</dimen>
     <dimen name="sp_10">10sp</dimen>
     <dimen name="sp_11">11sp</dimen>

@@ -19,9 +19,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.footprints.R;
 import com.footprints.util.CodeSnippet;
 import com.footprints.view.iview.IView;
 import com.footprints.viewmodel.iviewmodel.IViewModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -34,6 +39,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     protected CodeSnippet mCodeSnippet;
     ProgressDialog pDialog;
     private IViewModel iViewModel;
+    protected GoogleSignInClient mGoogleSignInClient;
+    private int RC_SIGN_IN = 9001;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +51,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         hideKeyboard(getActivity());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         injectViews();
+        googleLoginSetup();
+    }
+
+    private void googleLoginSetup() {
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.client_id))
+                .requestEmail()
+                .requestProfile()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
     }
 
     protected abstract int getLayoutId();
@@ -161,12 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         if (mParentView != null) {
             Snackbar snackbar = Snackbar.make(mParentView, "No Network found!", Snackbar.LENGTH_LONG);
             snackbar.setActionTextColor(Color.RED);
-            snackbar.setAction("Settings", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mCodeSnippet.showNetworkSettings();
-                }
-            });
+            snackbar.setAction("Settings", view -> mCodeSnippet.showNetworkSettings());
             snackbar.show();
         }
     }
@@ -194,6 +208,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     public void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+    }
+
+    public FirebaseAuth getFirebaseAuth() {
+        if (mFirebaseAuth == null) {
+            return mFirebaseAuth = FirebaseAuth.getInstance();
+        }
+        return mFirebaseAuth;
     }
 
 }
