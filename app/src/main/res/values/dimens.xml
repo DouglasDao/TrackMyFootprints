@@ -86,8 +86,9 @@
     <item name="w0.7" type="integer" tools:ignore="MissingDefaultResource">0.7</item>
     <item name="w0.8" type="integer" tools:ignore="MissingDefaultResource">0.8</item>
     <item name="w0.9" type="integer" tools:ignore="MissingDefaultResource">0.9</item>
-    <item name="minus10" type="integer">-10px</item>
 
+    <item name="minus10" type="integer">-10px</item>
+    <integer name="duration">500</integer>
     <!-- Font Sizes -->
 
     <dimen name="sp_04">4sp</dimen>

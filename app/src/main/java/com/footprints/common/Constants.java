@@ -10,13 +10,16 @@ public interface Constants {
     }
 
     interface RequestCodes {
-        int RC_SIGN_IN = 9001;
+        int GOOGLE_SIGN_IN = 9001;
+        int FB_SIGN_IN = 9002;
     }
 
     interface BundleKey {
         String USER_EMAIL = "USER_EMAIL";
         String USER_NAME = "USER_NAME";
         String PHOTO_URI = "PHOTO_URO";
+        String LOGIN_TYPE = "LOGIN_TYPE";
+        String MOB_NUM = "MOB_NUM";
     }
 
 }

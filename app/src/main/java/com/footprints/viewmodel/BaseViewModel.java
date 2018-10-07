@@ -89,6 +89,12 @@ public abstract class BaseViewModel extends AndroidViewModel implements IViewMod
         return mFirebaseAuth;
     }
 
+    protected boolean isNullOrEmpty(String str) {
+        if (str != null && !str.isEmpty())
+            return false;
+        return true;
+    }
+
     /*protected String getStringRes(int res){
         return iView.getActivity().getString(res);
     }

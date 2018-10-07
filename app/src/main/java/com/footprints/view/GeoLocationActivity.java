@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -21,6 +20,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.facebook.login.LoginManager;
 import com.footprints.R;
 import com.footprints.adapter.GeoAdapter;
 import com.footprints.common.Constants;
@@ -31,7 +31,6 @@ import com.footprints.util.SwipeItem;
 import com.footprints.view.iview.IGeoLocationView;
 import com.footprints.viewmodel.GeoLocationViewModel;
 import com.footprints.viewmodel.iviewmodel.IGeoLocationViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -46,15 +45,12 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
     AppCompatImageView mIvDelete;
     @BindView(R.id.iv_pic)
     AppCompatImageView mIvProfilePic;
-    @BindView(R.id.iv_logout)
-    AppCompatImageView mIvLogout;
     @BindView(R.id.tv_profile_name)
     AppCompatTextView mIvProfileName;
 
     private IGeoLocationViewModel iGeoLocationViewModel;
     private GeoAdapter mGeoAdapter;
     private GeoLocationViewModel geoDataViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +151,7 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        mIvProfilePic.setVisibility(View.GONE);
+                        mIvProfilePic.setImageResource(R.drawable.ic_broken_image);
                         return false;
                     }
 
@@ -180,7 +176,9 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
 
     @OnClick(R.id.iv_logout)
     void logout() {
-        FirebaseAuth.getInstance().signOut();
+        iGeoLocationViewModel.logout();
+        getFirebaseAuth().signOut();
+        LoginManager.getInstance().logOut();
         mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 SharedPref.getInstance().setSharedValue(GeoLocationActivity.this, Constants.SharedPrefKey.LOGIN_FLAG, false);
@@ -188,5 +186,4 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
             }
         });
     }
-
 }

@@ -4,46 +4,125 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/iv_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_login"
-        android:padding="@dimen/dp48"
-        android:scaleType="centerCrop" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/iv_pwd"
-        android:layout_centerInParent="true"
-        android:gravity="center"
         android:orientation="vertical"
         android:weightSum="1">
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/iv_google_signin"
-            android:layout_width="@dimen/dp140"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="@integer/w0.2"
-            android:background="@drawable/shape_square"
-            android:padding="@dimen/dp12"
-            android:src="@drawable/ic_google" />
+            android:layout_weight="@integer/w0.5"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="@integer/w0.1" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_lock_logo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp90"
+                android:src="@drawable/ic_lock_icon" />
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/iv_mob_auth"
-            android:layout_width="@dimen/dp140"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_login"
+                android:padding="@dimen/dp40" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="@integer/w0.2"
-            android:background="@drawable/shape_square"
-            android:padding="@dimen/dp12"
-            android:src="@drawable/ic_authentication" />
+            android:layout_weight="@integer/w0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp140"
+                    android:layout_weight="@integer/w0.5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_google_signin"
+                        android:layout_width="@dimen/dp140"
+                        android:layout_height="0dp"
+                        android:layout_weight="@integer/w0.2"
+                        android:background="@drawable/shape_square"
+                        android:padding="@dimen/dp12"
+                        android:src="@drawable/ic_google" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="@integer/w0.1" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_mob_auth"
+                        android:layout_width="@dimen/dp140"
+                        android:layout_height="0dp"
+                        android:layout_weight="@integer/w0.2"
+                        android:background="@drawable/shape_square"
+                        android:padding="@dimen/dp12"
+                        android:src="@drawable/ic_phone_auth" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp140"
+                    android:layout_weight="@integer/w0.5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                    <FrameLayout
+                        android:layout_width="@dimen/dp140"
+                        android:layout_height="0dp"
+                        android:layout_weight="@integer/w0.2">
+
+                        <com.facebook.login.widget.LoginButton
+                            android:id="@+id/lb_fblogin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/iv_facebook_signin"
+                            android:layout_width="@dimen/dp140"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shape_square"
+                            android:padding="@dimen/dp12"
+                            android:src="@drawable/ic_fb_social_network" />
+                    </FrameLayout>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="@integer/w0.1" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_anonymous_auth"
+                        android:layout_width="@dimen/dp140"
+                        android:layout_height="0dp"
+                        android:layout_weight="@integer/w0.2"
+                        android:background="@drawable/shape_square"
+                        android:padding="@dimen/dp12"
+                        android:src="@drawable/ic_authentication" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
+
 
 </RelativeLayout>

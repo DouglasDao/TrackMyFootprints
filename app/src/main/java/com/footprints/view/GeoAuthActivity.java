@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
 
+import com.facebook.login.widget.LoginButton;
 import com.footprints.R;
 import com.footprints.common.Constants;
 import com.footprints.view.iview.IGeoAuthView;
@@ -16,10 +17,10 @@ import butterknife.OnClick;
 
 public class GeoAuthActivity extends BaseActivity implements IGeoAuthView {
 
-    @BindView(R.id.iv_google_signin)
-    AppCompatImageView mIvGoogleSignin;
-    @BindView(R.id.iv_mob_auth)
-    AppCompatImageView mIvMobAuth;
+    @BindView(R.id.iv_facebook_signin)
+    AppCompatImageView mFbLogin;
+    @BindView(R.id.lb_fblogin)
+    LoginButton mLoginButton;
 
     private IGeoAuthViewModel iGeoAuthViewModel;
 
@@ -44,20 +45,25 @@ public class GeoAuthActivity extends BaseActivity implements IGeoAuthView {
     @OnClick(R.id.iv_google_signin)
     void googleSignInPopup() {
         if (getCodeSnippet().hasNetworkConnection()) {
-            startActivityForResult(mGoogleSignInClient.getSignInIntent(), Constants.RequestCodes.RC_SIGN_IN);
+            startActivityForResult(mGoogleSignInClient.getSignInIntent(), Constants.RequestCodes.GOOGLE_SIGN_IN);
         } else {
             showNetworkMessage();
         }
     }
 
-    @OnClick(R.id.iv_mob_auth)
-    void mobileAuth() {
-
+    @OnClick(R.id.iv_facebook_signin)
+    void fbAuth() {
+        if (!getCodeSnippet().hasNetworkConnection()) {
+            showNetworkMessage();
+            return;
+        }
+        iGeoAuthViewModel.registerFbLoginAuth(mLoginButton);
     }
 
     @Override
     public void navigateToHome(Intent intent) {
         startActivity(intent);
+        finish();
         overridePendingTransition(R.animator.activity_in, R.animator.activity_out);
     }
 }

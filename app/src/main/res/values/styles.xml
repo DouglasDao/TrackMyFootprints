@@ -12,4 +12,8 @@
 
     </style>
 
+    <style name="MyMenuTheme" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">#ff000000</item>
+    </style>
+
 </resources>

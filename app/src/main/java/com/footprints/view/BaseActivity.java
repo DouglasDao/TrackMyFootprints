@@ -1,9 +1,13 @@
 package com.footprints.view;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,16 +15,23 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.text.Html;
 import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.footprints.R;
+import com.footprints.common.Constants;
 import com.footprints.util.CodeSnippet;
+import com.footprints.util.SharedPref;
 import com.footprints.view.iview.IView;
 import com.footprints.viewmodel.iviewmodel.IViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -28,19 +39,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity implements IView {
 
+    public GoogleSignInClient mGoogleSignInClient;
     protected String TAG = getClass().getSimpleName();
     protected View mParentView;
     protected CodeSnippet mCodeSnippet;
     ProgressDialog pDialog;
     private IViewModel iViewModel;
-    protected GoogleSignInClient mGoogleSignInClient;
-    private int RC_SIGN_IN = 9001;
     private FirebaseAuth mFirebaseAuth;
 
     @Override
@@ -101,10 +113,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         if (iViewModel != null) iViewModel.onResumeViewModel();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (iViewModel != null) iViewModel.onDestroyViewModel();
+    private static void doKeepDialog(Dialog dialog) {
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
     }
 
     @Override
@@ -146,6 +160,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         pDialog.setCancelable(false);
         pDialog.show();
     }
+
     public void closeLoadingDialog() {
 
         if (pDialog != null && pDialog.isShowing()) {
@@ -215,6 +230,94 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
             return mFirebaseAuth = FirebaseAuth.getInstance();
         }
         return mFirebaseAuth;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clearLoginSession();
+        if (iViewModel != null) iViewModel.onDestroyViewModel();
+    }
+
+    public boolean isAuthUserFB() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null && !accessToken.isExpired();
+    }
+
+    public void googleSignOut() {
+        SharedPref.getInstance().setSharedValue(this, Constants.SharedPrefKey.LOGIN_FLAG, false);
+        getFirebaseAuth().signOut();
+        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                redirectToAuth();
+            }
+        });
+    }
+
+    public void fbSignOut() {
+        SharedPref.getInstance().setSharedValue(this, Constants.SharedPrefKey.LOGIN_FLAG, false);
+        getFirebaseAuth().signOut();
+        LoginManager.getInstance().logOut();
+        redirectToAuth();
+    }
+
+    private void redirectToAuth() {
+        Intent intent = new Intent(this, GeoAuthActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    public boolean isNullOrEmpty(String str) {
+        if (str != null && !str.isEmpty())
+            return false;
+        return true;
+    }
+
+    public void clearOnBackPress() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.exit_alert);
+
+        AppCompatButton mPositive = dialog.findViewById(R.id.bt_yes);
+        Objects.requireNonNull(mPositive).setOnClickListener(view -> clearLoginSession());
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.shape_rectangle);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+        dialog.show();
+        doKeepDialog(dialog);
+    }
+
+    private void clearLoginSession() {
+        SharedPref.getInstance().setSharedValue(this, Constants.SharedPrefKey.LOGIN_FLAG, false);
+        getFirebaseAuth().signOut();
+        LoginManager.getInstance().logOut();
+        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                super.onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        clearOnBackPress();
+    }
+
+    private void getFbKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo("com.footprints", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 
 }

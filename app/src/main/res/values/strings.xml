@@ -3,4 +3,9 @@
     <string name="no_network">Enable Network to receive address</string>
     <string name="location_history">Location History</string>
     <string name="client_id">983604390274-pcr8nkv0994u8befh5o1675gqlt36t6j.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">2329362793954469</string>
+    <string name="fb_login_protocol_scheme">fb2329362793954469</string>
+    <string name="exit_alert_msg">Do you want to exit App ?</string>
+    <string name="yes">Yes</string>
+
 </resources>

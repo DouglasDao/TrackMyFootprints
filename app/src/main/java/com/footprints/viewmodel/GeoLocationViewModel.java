@@ -86,6 +86,7 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
     private Uri mProfilePhoto;
     private String mDisplayName;
     private String mPersonEmail;
+    private String mLoginType;
     private Context mContext;
     /**
      * Location Result from Location Callback for Periodic Updates
@@ -173,21 +174,35 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
 
     private void intentFromAuth(Bundle mBundle) {
         if (mBundle != null) {
+            mLoginType = mBundle.getString(Constants.BundleKey.LOGIN_TYPE);
             mProfilePhoto = Uri.parse(Objects.requireNonNull(mBundle.getString(Constants.BundleKey.PHOTO_URI)));
             mDisplayName = Objects.requireNonNull(mBundle.getString(Constants.BundleKey.USER_NAME));
             mPersonEmail = Objects.requireNonNull(mBundle.getString(Constants.BundleKey.USER_EMAIL));
-            iGeoLocationView.updateProfileInfo(mDisplayName, mProfilePhoto);
-            mGeoPositions.put("Person Email", mPersonEmail);
-            mGeoPositions.put("Google Username", mDisplayName);
-            mGeoPositions.put("Photo", mProfilePhoto.toString());
-            SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.DISPLAY_NAME, mDisplayName);
-            SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.PHOTO_URI, mProfilePhoto.toString());
-        } else {
+            mGeoPositions.put("Login Type", mLoginType);
+            if (Objects.equals(mLoginType, "google")) {
+                iGeoLocationView.updateProfileInfo(mDisplayName, mProfilePhoto);
+                mGeoPositions.put("Person Email", mPersonEmail);
+                mGeoPositions.put("Google Username", mDisplayName);
+                mGeoPositions.put("Google Photo", mProfilePhoto.toString());
+                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.DISPLAY_NAME, mDisplayName);
+                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.PHOTO_URI, mProfilePhoto.toString());
+            } else if (Objects.equals(mLoginType, "fb")) {
+                iGeoLocationView.updateProfileInfo(mDisplayName, mProfilePhoto);
+                mGeoPositions.put("Person Email", mPersonEmail);
+                mGeoPositions.put("FB Username", mDisplayName);
+                mGeoPositions.put("FB Photo", mProfilePhoto.toString());
+                if (!Objects.requireNonNull(mBundle.getString(Constants.BundleKey.MOB_NUM)).isEmpty()) {
+                    mGeoPositions.put("FB Phone Number", Objects.requireNonNull(mBundle.getString(Constants.BundleKey.MOB_NUM)));
+                }
+                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.DISPLAY_NAME, mDisplayName);
+                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.PHOTO_URI, mProfilePhoto.toString());
+            }
             String dispName = SharedPref.getInstance().getStringValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.DISPLAY_NAME);
             String profPic = SharedPref.getInstance().getStringValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.PHOTO_URI);
             iGeoLocationView.updateProfileInfo(dispName, Uri.parse(profPic));
         }
     }
+
 
     private void checkForGPSStatus() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -474,6 +489,23 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
             AlertDialog dialog = builder.create();
             dialog.show();
             Objects.requireNonNull(dialog.getWindow()).getDecorView().setAlpha(0.6f);
+        }
+    }
+
+    @Override
+    public void logout() {
+        if (mLoginType != null) {
+            if (!mLoginType.isEmpty()) {
+                if (mLoginType.equals("google")) {
+                    if (((BaseActivity) iGeoLocationView.getActivity()) != null) {
+                        ((BaseActivity) iGeoLocationView.getActivity()).googleSignOut();
+                    }
+                } else if (mLoginType.equals("fb")) {
+                    if (((BaseActivity) iGeoLocationView.getActivity()) != null) {
+                        ((BaseActivity) iGeoLocationView.getActivity()).fbSignOut();
+                    }
+                }
+            }
         }
     }
 }
