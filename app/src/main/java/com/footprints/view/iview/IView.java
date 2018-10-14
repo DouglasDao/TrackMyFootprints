@@ -1,5 +1,6 @@
 package com.footprints.view.iview;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -18,6 +19,10 @@ public interface IView {
     void showSnackBar(String message);
 
     void showSnackBar(@NonNull View view, String message);
+
+    void showLoadingDialog(Context context);
+
+    void closeLoadingDialog();
 
     void showNetworkMessage();
 

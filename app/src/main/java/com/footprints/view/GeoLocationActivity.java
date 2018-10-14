@@ -20,7 +20,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.facebook.login.LoginManager;
 import com.footprints.R;
 import com.footprints.adapter.GeoAdapter;
 import com.footprints.common.Constants;
@@ -164,6 +163,11 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
                 .into(mIvProfilePic);
     }
 
+    @Override
+    public void signOut() {
+        redirectToAuth();
+    }
+
     private void checkForDeleteOption() {
         if (mGeoAdapter != null) {
             if (mGeoAdapter.getItemCount() > 0) {
@@ -177,13 +181,5 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
     @OnClick(R.id.iv_logout)
     void logout() {
         iGeoLocationViewModel.logout();
-        getFirebaseAuth().signOut();
-        LoginManager.getInstance().logOut();
-        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-                SharedPref.getInstance().setSharedValue(GeoLocationActivity.this, Constants.SharedPrefKey.LOGIN_FLAG, false);
-                finish();
-            }
-        });
     }
 }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cv_alert"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp20"
+        android:paddingEnd="@dimen/dp20">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <com.footprints.util.GeoEditText
+                android:id="@+id/ed_phone_num"
+                android:layout_width="@dimen/dp160"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp32"
+                android:background="@drawable/shape_square"
+                android:digits="0123456789"
+                android:fontFamily="@font/antaro"
+                android:gravity="bottom"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="@dimen/dp12"
+                android:tag="+91"
+                android:visibility="visible" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/ed_verify_code"
+                android:layout_width="@dimen/dp120"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp32"
+                android:background="@drawable/shape_square"
+                android:digits="0123456789"
+                android:fontFamily="@font/antaro"
+                android:gravity="center"
+                android:hint="@string/verification_code"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="6"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="@dimen/dp12"
+                android:visibility="gone" />
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/dp32"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp12">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/bt_verify_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp32"
+                android:background="#FF283747"
+                android:text="@string/ok"
+                android:textColor="#ADADAD" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/bt_verify_code"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp32"
+                android:background="#FF283747"
+                android:text="@string/verify"
+                android:textColor="#ADADAD"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ic_dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/layout" />
+
+</RelativeLayout>

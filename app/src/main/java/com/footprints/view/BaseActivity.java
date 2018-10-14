@@ -16,7 +16,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
-import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
@@ -33,6 +32,7 @@ import com.footprints.common.Constants;
 import com.footprints.util.CodeSnippet;
 import com.footprints.util.SharedPref;
 import com.footprints.view.iview.IView;
+import com.footprints.view.widget.CustomProgressbar;
 import com.footprints.viewmodel.iviewmodel.IViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -53,12 +53,14 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     protected CodeSnippet mCodeSnippet;
     ProgressDialog pDialog;
     private IViewModel iViewModel;
+    private CustomProgressbar mCustomProgressbar;
     private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(getLayoutId());
         hideKeyboard(getActivity());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -113,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         if (iViewModel != null) iViewModel.onResumeViewModel();
     }
 
-    private static void doKeepDialog(Dialog dialog) {
+    public void doKeepDialog(Dialog dialog) {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -153,20 +155,27 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void showLoadingDialog(Context context) {
-
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage(Html.escapeHtml("<b>Please wait auto read otp processing...</b>"));
-        pDialog.setCancelable(false);
-        pDialog.show();
+        getProgressBar().show();
     }
 
+    @Override
     public void closeLoadingDialog() {
+        runOnUiThread(() -> {
+            try {
+                getProgressBar().dismissProgress();
+            } catch (Exception e) {
+                showMessage("Please Remove/Kill the app!");
+            }
+        });
+    }
 
-        if (pDialog != null && pDialog.isShowing()) {
-            pDialog.dismiss();
+    private CustomProgressbar getProgressBar() {
+        if (mCustomProgressbar == null) {
+            mCustomProgressbar = new CustomProgressbar(this);
         }
-
+        return mCustomProgressbar;
     }
 
     @Override
@@ -210,14 +219,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     }
 
     public void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
-        Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void hideKeyboardFrom(Context context, View view) {
@@ -230,13 +238,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
             return mFirebaseAuth = FirebaseAuth.getInstance();
         }
         return mFirebaseAuth;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        clearLoginSession();
-        if (iViewModel != null) iViewModel.onDestroyViewModel();
     }
 
     public boolean isAuthUserFB() {
@@ -261,12 +262,14 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         redirectToAuth();
     }
 
-    private void redirectToAuth() {
+    public void redirectToAuth() {
+        SharedPref.getInstance().setSharedValue(this, Constants.SharedPrefKey.LOGIN_FLAG, false);
         Intent intent = new Intent(this, GeoAuthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
+        overridePendingTransition(R.animator.activity_back_in, R.animator.activity_back_out);
     }
 
     public boolean isNullOrEmpty(String str) {
@@ -279,9 +282,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.exit_alert);
-
         AppCompatButton mPositive = dialog.findViewById(R.id.bt_yes);
-        Objects.requireNonNull(mPositive).setOnClickListener(view -> clearLoginSession());
+        Objects.requireNonNull(mPositive).setOnClickListener(view -> {
+            dialog.dismiss();
+            clearLoginSession();
+        });
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.shape_rectangle);
         Objects.requireNonNull(dialog.getWindow()).setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(true);
@@ -289,13 +294,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         doKeepDialog(dialog);
     }
 
-    private void clearLoginSession() {
+    public void clearLoginSession() {
         SharedPref.getInstance().setSharedValue(this, Constants.SharedPrefKey.LOGIN_FLAG, false);
         getFirebaseAuth().signOut();
         LoginManager.getInstance().logOut();
         mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                super.onBackPressed();
+                finish();
             }
         });
     }

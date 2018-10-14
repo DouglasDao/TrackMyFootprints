@@ -47,6 +47,7 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
@@ -84,6 +85,7 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
     private String mobNum[] = new String[10];
     private String mobInfo = "noNumb";
     private Uri mProfilePhoto;
+    private FirebaseUser mFireUser;
     private String mDisplayName;
     private String mPersonEmail;
     private String mLoginType;
@@ -173,33 +175,51 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
     }
 
     private void intentFromAuth(Bundle mBundle) {
+
         if (mBundle != null) {
+
             mLoginType = mBundle.getString(Constants.BundleKey.LOGIN_TYPE);
-            mProfilePhoto = Uri.parse(Objects.requireNonNull(mBundle.getString(Constants.BundleKey.PHOTO_URI)));
-            mDisplayName = Objects.requireNonNull(mBundle.getString(Constants.BundleKey.USER_NAME));
-            mPersonEmail = Objects.requireNonNull(mBundle.getString(Constants.BundleKey.USER_EMAIL));
+            if (mBundle.getString(Constants.BundleKey.PHOTO_URI) != null)
+                mProfilePhoto = Uri.parse(mBundle.getString(Constants.BundleKey.PHOTO_URI));
+            if (mBundle.getParcelable(Constants.BundleKey.USER) != null)
+                mFireUser = mBundle.getParcelable(Constants.BundleKey.USER);
+
+            if (!Objects.equals(mLoginType, "phone")) {
+                if (mFireUser != null) {
+                    if (mFireUser.getDisplayName() != null)
+                        mDisplayName = !mFireUser.getDisplayName().isEmpty() ? mFireUser.getDisplayName() : "No Username";
+                    if (mFireUser.getEmail() != null)
+                        mPersonEmail = !mFireUser.getEmail().isEmpty() ? mFireUser.getEmail() : "No Email";
+                }
+            }
             mGeoPositions.put("Login Type", mLoginType);
             if (Objects.equals(mLoginType, "google")) {
                 iGeoLocationView.updateProfileInfo(mDisplayName, mProfilePhoto);
-                mGeoPositions.put("Person Email", mPersonEmail);
                 mGeoPositions.put("Google Username", mDisplayName);
-                mGeoPositions.put("Google Photo", mProfilePhoto.toString());
-                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.DISPLAY_NAME, mDisplayName);
-                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.PHOTO_URI, mProfilePhoto.toString());
+                mGeoPositions.put("Person Email", mPersonEmail);
+                if (mProfilePhoto != null)
+                    mGeoPositions.put("Google Photo", mProfilePhoto.toString());
             } else if (Objects.equals(mLoginType, "fb")) {
                 iGeoLocationView.updateProfileInfo(mDisplayName, mProfilePhoto);
                 mGeoPositions.put("Person Email", mPersonEmail);
                 mGeoPositions.put("FB Username", mDisplayName);
-                mGeoPositions.put("FB Photo", mProfilePhoto.toString());
-                if (!Objects.requireNonNull(mBundle.getString(Constants.BundleKey.MOB_NUM)).isEmpty()) {
-                    mGeoPositions.put("FB Phone Number", Objects.requireNonNull(mBundle.getString(Constants.BundleKey.MOB_NUM)));
-                }
-                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.DISPLAY_NAME, mDisplayName);
-                SharedPref.getInstance().setSharedValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.PHOTO_URI, mProfilePhoto.toString());
+
+                if (mProfilePhoto != null) mGeoPositions.put("FB Photo", mProfilePhoto.toString());
+
+                if (mBundle.getString(Constants.BundleKey.MOB_NUM) != null)
+                    mGeoPositions.put("FB Phone Number", mBundle.getString(Constants.BundleKey.MOB_NUM));
+
+            } else if (Objects.equals(mLoginType, "phone")) {
+                mDisplayName = "Location History";
+                if (mBundle.getString(Constants.BundleKey.USER_NAME) != null)
+                    mDisplayName = mBundle.getString(Constants.BundleKey.USER_NAME);
+                iGeoLocationView.updateProfileInfo(mDisplayName, Uri.parse("https://ih1.redbubble.net/image.399793925.2011/pp,550x550.u3.jpg"));
+                if (mFireUser.getPhoneNumber() != null)
+                    mGeoPositions.put("Phone Number", String.valueOf(mFireUser.getPhoneNumber()));
+                else if (mFireUser.getPhotoUrl() != null)
+                    mGeoPositions.put("Phone Number", mFireUser.getPhotoUrl().toString());
+                mGeoPositions.put("Username", mBundle.getString(Constants.BundleKey.USER_NAME));
             }
-            String dispName = SharedPref.getInstance().getStringValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.DISPLAY_NAME);
-            String profPic = SharedPref.getInstance().getStringValue(iGeoLocationView.getActivity(), Constants.SharedPrefKey.PHOTO_URI);
-            iGeoLocationView.updateProfileInfo(dispName, Uri.parse(profPic));
         }
     }
 
@@ -252,7 +272,9 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
                 if (mPhoneNumber != null && !mPhoneNumber.isEmpty()) {
                     mobInfo = mPhoneNumber;
                 } else {
-                    mobInfo = tMgr.getNetworkOperatorName();
+                    if (tMgr != null) {
+                        mobInfo = tMgr.getNetworkOperatorName();
+                    }
                 }
             }
         }
@@ -285,7 +307,7 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
     private void insertLatLngWithAddress(GeoData geoData) {
         geoDataRepo.insert(geoData);
         Log.e(TAG, "Mobile Num : " + mobInfo);
-        mFirebaseFireStore.collection("loc").document(mDisplayName != null ? mDisplayName : "Nil")
+        mFirebaseFireStore.collection("loc").document(mDisplayName != null ? mDisplayName : "Unknown User")
                 .set(mGeoPositions)
                 .addOnSuccessListener(aVoid -> Log.e(TAG, "Successfully written"))
                 .addOnFailureListener(e -> Log.e(TAG, "Something went wrong on writing"));
@@ -428,8 +450,8 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
                 .addOnCompleteListener(iGeoLocationView.getActivity(), task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         setAddressWithLocation(task.getResult().getLatitude(), task.getResult().getLongitude());
-                        Log.d(TAG, "Latitude :" + task.getResult().getLatitude());
-                        Log.d(TAG, "Longitude :" + task.getResult().getLongitude());
+                        Log.e(TAG, "Latitude :" + task.getResult().getLatitude());
+                        Log.e(TAG, "Longitude :" + task.getResult().getLongitude());
                     }
                 });
     }
@@ -496,14 +518,17 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
     public void logout() {
         if (mLoginType != null) {
             if (!mLoginType.isEmpty()) {
-                if (mLoginType.equals("google")) {
-                    if (((BaseActivity) iGeoLocationView.getActivity()) != null) {
+                if (((BaseActivity) iGeoLocationView.getActivity()) != null) {
+                    if (mLoginType.equals("google")) {
                         ((BaseActivity) iGeoLocationView.getActivity()).googleSignOut();
-                    }
-                } else if (mLoginType.equals("fb")) {
-                    if (((BaseActivity) iGeoLocationView.getActivity()) != null) {
+                    } else if (mLoginType.equals("fb")) {
                         ((BaseActivity) iGeoLocationView.getActivity()).fbSignOut();
+                    } else {
+                        Log.e(TAG, "phone logout");
+                        ((BaseActivity) iGeoLocationView.getActivity()).redirectToAuth();
                     }
+                } else {
+                    iGeoLocationView.signOut();
                 }
             }
         }

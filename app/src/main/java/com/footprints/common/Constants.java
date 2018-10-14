@@ -7,6 +7,7 @@ public interface Constants {
         String LOGIN_FLAG = "LOGIN_FLAG";
         String PHOTO_URI = "PHOTO_URI";
         String DISPLAY_NAME = "DISPLAY_NAME";
+        String PHONE_VERIFY_CODE = "PHONE_VERIFY_CODE";
     }
 
     interface RequestCodes {
@@ -20,6 +21,8 @@ public interface Constants {
         String PHOTO_URI = "PHOTO_URO";
         String LOGIN_TYPE = "LOGIN_TYPE";
         String MOB_NUM = "MOB_NUM";
+        String USER = "USER";
+        String SOCIAL = "SOCIAL";
     }
 
 }

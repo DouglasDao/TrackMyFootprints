@@ -7,5 +7,9 @@
     <string name="fb_login_protocol_scheme">fb2329362793954469</string>
     <string name="exit_alert_msg">Do you want to exit App ?</string>
     <string name="yes">Yes</string>
+    <string name="verify">Verify</string>
+    <string name="ok">Ok</string>
+    <string name="verification_code">OTP</string>
+    <string name="name">Name</string>
 
 </resources>

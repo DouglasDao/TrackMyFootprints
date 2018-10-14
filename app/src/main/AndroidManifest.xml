@@ -24,11 +24,13 @@
 
         <activity
             android:name=".view.GeoLocationActivity"
+            android:launchMode="standard"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".view.CustomCrash" />
         <activity
             android:name=".view.GeoAuthActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
