@@ -114,7 +114,7 @@ public class GeoAuthViewModel extends BaseViewModel implements IGeoAuthViewModel
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 iGeoAuthView.closeLoadingDialog();
-                iGeoAuthView.showMessage("Sign in Failed");
+                iGeoAuthView.showMessage("Sign in Cancelled");
             }
         } else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);

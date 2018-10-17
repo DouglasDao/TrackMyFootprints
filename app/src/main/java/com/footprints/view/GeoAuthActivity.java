@@ -39,7 +39,6 @@ public class GeoAuthActivity extends BaseActivity implements IGeoAuthView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         iGeoAuthViewModel = new GeoAuthViewModel(getActivity().getApplication(), this);
         iGeoAuthViewModel.onCreateViewModel(getIntent().getExtras());
     }

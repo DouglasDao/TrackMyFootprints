@@ -19,10 +19,12 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -205,6 +207,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
             Snackbar snackbar = Snackbar.make(mParentView, "No Network found!", Snackbar.LENGTH_LONG);
             snackbar.setActionTextColor(Color.RED);
             snackbar.setAction("Settings", view -> mCodeSnippet.showNetworkSettings());
+            View view = snackbar.getView();
+            view.setAlpha(0.9f);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            view.setLayoutParams(params);
             snackbar.show();
         }
     }
