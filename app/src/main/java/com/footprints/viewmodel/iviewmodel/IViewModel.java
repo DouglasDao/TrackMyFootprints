@@ -23,6 +23,8 @@ public interface IViewModel {
 
     void onRestoreInstanceStateViewModel(Bundle data);
 
+    void onActivityCreatedViewModel(Bundle data);
+
     void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 
 }

@@ -61,10 +61,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayoutId());
-        hideKeyboard(getActivity());
+        //hideKeyboard(getActivity());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         injectViews();
         googleLoginSetup();
@@ -90,7 +90,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
 
     private void injectViews() {
         ButterKnife.bind(this);
-
     }
 
     @Override
@@ -159,7 +158,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
 
     @Override
     public void showLoadingDialog(Context context) {
-        getProgressBar().show();
+        if (context != null) {
+            if (getProgressBar() != null) {
+                getProgressBar().show();
+            }
+        }
     }
 
     @Override

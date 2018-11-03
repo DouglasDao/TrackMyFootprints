@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.footprints.common.Constants;
+
 
 /**
  * This class handles the all the shared preference operation.
@@ -16,6 +18,7 @@ public class SharedPref {
 
     // Single ton objects...
     private static SharedPreferences preference = null;
+    Editor editor;
     private static SharedPref sharedPref = null;
     private Context context;
 
@@ -61,7 +64,7 @@ public class SharedPref {
             return preference;
         } else {
             //TODO: Shared Preference name has to be set....
-            preference = context.getSharedPreferences("ConneKt", Context.MODE_PRIVATE);
+            preference = context.getSharedPreferences("ConneKt", Context.MODE_MULTI_PROCESS);
             return preference;
         }
     }
@@ -76,21 +79,21 @@ public class SharedPref {
 
     public void setSharedValue(Context context, String key, String value) {
         getPreferenceInstance(context);
-        Editor editor = preference.edit();
+        editor = preference.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
     public void setSharedValue(Context context, String key, Long value) {
         getPreferenceInstance(context);
-        Editor editor = preference.edit();
+        editor = preference.edit();
         editor.putLong(key, value);
         editor.apply();
     }
 
     public void setSharedValue(Context context, String key, Float value) {
         getPreferenceInstance(context);
-        Editor editor = preference.edit();
+        editor = preference.edit();
         editor.putFloat(key, value);
         editor.apply();
     }
@@ -205,5 +208,12 @@ public class SharedPref {
     public void clearSharedPref() {
         preference = null;
         sharedPref = null;
+    }
+
+    public void onClearAllPreferences(Context context) {
+        SharedPreferences latPreferences = context.getSharedPreferences(Constants.SharedPrefKey.LAT_KEY, Context.MODE_PRIVATE);
+        SharedPreferences lngPreferences = context.getSharedPreferences(Constants.SharedPrefKey.LNG_KEY, Context.MODE_PRIVATE);
+        latPreferences.edit().clear().apply();
+        lngPreferences.edit().clear().apply();
     }
 }

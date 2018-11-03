@@ -104,24 +104,26 @@ public class CodeSnippet {
     }
 
     public String getAddressFromLocation(double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
-        try {
-            if (Geocoder.isPresent()) {
-                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                if (addresses != null && addresses.size() > 0) {
-                    Address fetchedAddress = addresses.get(0);
-                    StringBuilder strAddress = new StringBuilder();
-                    for (int i = 0; i <= fetchedAddress.getMaxAddressLineIndex(); i++) {
-                        strAddress.append(fetchedAddress.getAddressLine(i)).append(" ");
+        if (mContext != null) {
+            Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+            try {
+                if (Geocoder.isPresent()) {
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                    if (addresses != null && addresses.size() > 0) {
+                        Address fetchedAddress = addresses.get(0);
+                        StringBuilder strAddress = new StringBuilder();
+                        for (int i = 0; i <= fetchedAddress.getMaxAddressLineIndex(); i++) {
+                            strAddress.append(fetchedAddress.getAddressLine(i)).append(" ");
+                        }
+                        return strAddress.toString();
                     }
-                    return strAddress.toString();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(mContext, mContext.getString(R.string.no_network), Toast.LENGTH_LONG).show();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(mContext, mContext.getString(R.string.no_network), Toast.LENGTH_LONG).show();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
         }
         return null;
     }

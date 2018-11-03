@@ -65,6 +65,11 @@ public abstract class BaseViewModel extends AndroidViewModel implements IViewMod
     }
 
     @Override
+    public void onActivityCreatedViewModel(Bundle data) {
+
+    }
+
+    @Override
     public void onRestoreInstanceStateViewModel(Bundle data) {
 
     }

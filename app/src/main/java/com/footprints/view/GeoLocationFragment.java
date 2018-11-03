@@ -2,7 +2,6 @@ package com.footprints.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,13 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.footprints.R;
 import com.footprints.adapter.GeoAdapter;
 import com.footprints.common.Constants;
@@ -32,31 +26,36 @@ import com.footprints.viewmodel.GeoLocationViewModel;
 import com.footprints.viewmodel.iviewmodel.IGeoLocationViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class GeoLocationActivity extends BaseActivity implements IGeoLocationView, SwipeAction {
+public class GeoLocationFragment extends BaseFragment implements IGeoLocationView, SwipeAction {
 
     @BindView(R.id.rv_geo_coordinates)
     RecyclerView mRvGeoCoordinates;
     @BindView(R.id.iv_delete)
     AppCompatImageView mIvDelete;
-    @BindView(R.id.iv_pic)
-    AppCompatImageView mIvProfilePic;
+    public IGeoLocationViewModel iGeoLocationViewModel;
+    /*@BindView(R.id.iv_pic)
+    AppCompatImageView mIvProfilePic;*/
     @BindView(R.id.tv_profile_name)
     AppCompatTextView mIvProfileName;
-
-    private IGeoLocationViewModel iGeoLocationViewModel;
     private GeoAdapter mGeoAdapter;
     private GeoLocationViewModel geoDataViewModel;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static GeoLocationFragment createFor(Bundle args) {
+        GeoLocationFragment fragment = new GeoLocationFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-        mRvGeoCoordinates.setLayoutManager(new LinearLayoutManager(this));
-        SharedPref.getInstance().setSharedValue(this, Constants.SharedPrefKey.LOGIN_FLAG, true);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mRvGeoCoordinates.setLayoutManager(new LinearLayoutManager(getContext()));
+        SharedPref.getInstance().setSharedValue(getContext(), Constants.SharedPrefKey.LOGIN_FLAG, true);
         SwipeItem swipeItem = new SwipeItem(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(swipeItem).attachToRecyclerView(mRvGeoCoordinates);
         /**
@@ -82,29 +81,31 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
                 }
             }
         });
-        iGeoLocationViewModel = new GeoLocationViewModel(getActivity().getApplication(), this);
-        iGeoLocationViewModel.onCreateViewModel(getIntent().getExtras());
+        Log.e(TAG, "Fragment onViewCreated");
+        iGeoLocationViewModel = new GeoLocationViewModel(Objects.requireNonNull(getActivity()).getApplication(), this);
+        iGeoLocationViewModel.onCreateViewModel(getArguments());
     }
 
-
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
+        Log.e(TAG, "Fragment onResume");
         checkForDeleteOption();
         super.onResume();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
+        Log.e(TAG, "Fragment onPause");
         super.onPause();
     }
 
@@ -144,23 +145,11 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
 
     @Override
     public void updateProfileInfo(String name, Uri photo) {
-        mIvProfileName.setText(name);
-        Glide.with(this)
-                .load(photo)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        mIvProfilePic.setImageResource(R.drawable.ic_broken_image);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .apply(RequestOptions.circleCropTransform())
-                .into(mIvProfilePic);
+        if (getActivity() != null) {
+            if (!getActivity().isDestroyed()) {
+                ((HomeActivity) getActivity()).setUserInfo(name, photo);
+            }
+        }
     }
 
     @Override
@@ -171,9 +160,11 @@ public class GeoLocationActivity extends BaseActivity implements IGeoLocationVie
     private void checkForDeleteOption() {
         if (mGeoAdapter != null) {
             if (mGeoAdapter.getItemCount() > 0) {
-                mIvDelete.setImageResource(R.drawable.ic_waste);
+                if (getActivity() != null)
+                    ((HomeActivity) getActivity()).setToolbarItems(R.drawable.ic_waste);
             } else {
-                mIvDelete.setImageResource(R.drawable.ic_waste_black);
+                if (getActivity() != null)
+                    ((HomeActivity) getActivity()).setToolbarItems(R.drawable.ic_waste_black);
             }
         }
     }

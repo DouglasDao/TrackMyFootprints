@@ -45,7 +45,7 @@ public class GeoAuthActivity extends BaseActivity implements IGeoAuthView {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_geo_launch_auth;
+        return R.layout.activity_geo_auth;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class GeoAuthActivity extends BaseActivity implements IGeoAuthView {
     void phoneAuth() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.phone_num_alert_1);
+        dialog.setContentView(R.layout.phone_num_alert);
         GeoEditText mPhoneNum = dialog.findViewById(R.id.ed_phone_num);
         AppCompatEditText mEdVerifyNum = dialog.findViewById(R.id.ed_verify_code);
         AppCompatButton mBtVerifyPhone = dialog.findViewById(R.id.bt_verify_phone);

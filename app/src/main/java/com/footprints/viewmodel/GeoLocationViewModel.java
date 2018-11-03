@@ -32,10 +32,15 @@ import com.footprints.model.GeoData;
 import com.footprints.model.GeoDataRepo;
 import com.footprints.util.SharedPref;
 import com.footprints.view.BaseActivity;
+import com.footprints.view.BaseFragment;
 import com.footprints.view.iview.IGeoLocationView;
 import com.footprints.viewmodel.iviewmodel.IGeoLocationViewModel;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.ActivityTransition;
+import com.google.android.gms.location.ActivityTransitionRequest;
+import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
@@ -46,11 +51,13 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -110,25 +117,30 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
                     newLongitude = loc.getLongitude();
                 }
 
+                Log.e(TAG, "Current Latitude :" + newLatitude);
+                Log.e(TAG, "Current Longitude :" + newLongitude);
+
                 String oldLatitude = SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LAT_KEY);
                 String oldLongitude = SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LNG_KEY);
 
                 if (oldLatitude.isEmpty() && oldLongitude.isEmpty()) {
-                    if (!newLatitude.isNaN() && !newLongitude.isNaN()) {
+                    Log.e(TAG, "First Latitude :" + newLatitude);
+                    Log.e(TAG, "First Longitude :" + newLongitude);
                         SharedPref.getInstance().setSharedValue(mContext, Constants.SharedPrefKey.LAT_KEY, String.valueOf(newLatitude));
                         SharedPref.getInstance().setSharedValue(mContext, Constants.SharedPrefKey.LNG_KEY, String.valueOf(newLongitude));
                         setAddressWithLocation(newLatitude, newLongitude);
-                    }
                 }
 
                 if (!oldLatitude.isEmpty()
                         && !oldLongitude.isEmpty()) {
-
+                    Log.e(TAG, "Previous Latitude :" + SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LAT_KEY));
+                    Log.e(TAG, "Previous Longitude :" + SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LNG_KEY));
                     String prevLatitude = SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LAT_KEY);
                     String prevLongitude = SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LNG_KEY);
 
                     if (!newLatitude.equals(Double.valueOf(prevLatitude)) && !newLongitude.equals(Double.valueOf(prevLongitude))) {
-
+                        Log.e(TAG, "New Latitude :" + newLatitude);
+                        Log.e(TAG, "New Longitude :" + newLongitude);
                         SharedPref.getInstance().setSharedValue(mContext, Constants.SharedPrefKey.LAT_KEY, String.valueOf(newLatitude));
                         SharedPref.getInstance().setSharedValue(mContext, Constants.SharedPrefKey.LNG_KEY, String.valueOf(newLongitude));
                         setAddressWithLocation(newLatitude, newLongitude);
@@ -141,6 +153,7 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
 
         @Override
         public void onLocationAvailability(LocationAvailability locationAvailability) {
+            Log.e(TAG, "onLocationAvailability check :" + locationAvailability.isLocationAvailable());
             super.onLocationAvailability(locationAvailability);
             if (!locationAvailability.isLocationAvailable()) {
                 getPeriodicLocations();
@@ -172,10 +185,54 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
         checkForGPSStatus();
         setPhoneState();
         intentFromAuth(bundle);
+        //startActivityRecognition();
+    }
+
+    private void startActivityRecognition() {
+        ActivityTransitionRequest request = new ActivityTransitionRequest(getActivityTransition());
+        Task<Void> task = ActivityRecognition.getClient(iGeoLocationView.getActivity()).requestActivityTransitionUpdates(request, null);
+        task.addOnCompleteListener(iGeoLocationView.getActivity(), new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.e(TAG, "Task Result : " + task.getResult());
+                } else {
+                    Log.e(TAG, "Task Failed..");
+                }
+            }
+        });
+    }
+
+    private List<ActivityTransition> getActivityTransition() {
+        List<ActivityTransition> transitions = new ArrayList<>();
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+        return transitions;
     }
 
     private void intentFromAuth(Bundle mBundle) {
-
         if (mBundle != null) {
 
             mLoginType = mBundle.getString(Constants.BundleKey.LOGIN_TYPE);
@@ -320,10 +377,16 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
     }
 
     @Override
-    public void onRestoreInstanceStateViewModel(Bundle data) {
+    public void onActivityCreatedViewModel(Bundle data) {
+        super.onActivityCreatedViewModel(data);
         if (data != null) {
             this.isLocUserDialog = data.getBoolean("UserLocationDialog");
         }
+    }
+
+    @Override
+    public void onRestoreInstanceStateViewModel(Bundle data) {
+
     }
 
     public LiveData<List<GeoData>> getGeoDatas() {
@@ -337,9 +400,9 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
 
     private LocationRequest setLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(10 * 1000);
-        mLocationRequest.setFastestInterval(2000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return mLocationRequest;
     }
 
@@ -349,7 +412,8 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
 
     private void getPeriodicLocations() {
         checkForGPSStatus();
-        ((BaseActivity) mContext).hideKeyboard(iGeoLocationView.getActivity());
+        if (iGeoLocationView.getActivity() != null)
+            ((BaseActivity) mContext).hideKeyboard(iGeoLocationView.getActivity());
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(setLocationRequest());
         builder.setAlwaysShow(true);
@@ -390,7 +454,8 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
                             try {
                                 ResolvableApiException resolvable = (ResolvableApiException) exception;
                                 if (!isLocUserDialog) {
-                                    resolvable.startResolutionForResult(iGeoLocationView.getActivity(), GPS_ENABLE_REQUEST_CODE);
+                                    if (iGeoLocationView.getActivity() != null)
+                                        resolvable.startResolutionForResult(iGeoLocationView.getActivity(), GPS_ENABLE_REQUEST_CODE);
                                     GeoLocationViewModel.this.isLocUserDialog = true;
                                 }
                             } catch (IntentSender.SendIntentException | ClassCastException e) {
@@ -423,6 +488,7 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
                 break;
             case MY_PHONE_STATE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setPhoneState();
                     getPeriodicLocations();
                 }
                 break;
@@ -444,14 +510,25 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
         }
     }
 
-    @SuppressLint("MissingPermission")
     private void getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(iGeoLocationView.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(iGeoLocationView.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
         mLocationProviderClient.getLastLocation()
                 .addOnCompleteListener(iGeoLocationView.getActivity(), task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
+                        Log.e(TAG, "getLastLocation Latitude :" + task.getResult().getLatitude());
+                        Log.e(TAG, "getLastLocation Longitude :" + task.getResult().getLongitude());
+
                         setAddressWithLocation(task.getResult().getLatitude(), task.getResult().getLongitude());
-                        Log.e(TAG, "Latitude :" + task.getResult().getLatitude());
-                        Log.e(TAG, "Longitude :" + task.getResult().getLongitude());
                     }
                 });
     }
@@ -520,12 +597,13 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
             if (!mLoginType.isEmpty()) {
                 if (((BaseActivity) iGeoLocationView.getActivity()) != null) {
                     if (mLoginType.equals("google")) {
-                        ((BaseActivity) iGeoLocationView.getActivity()).googleSignOut();
+
+                        ((BaseFragment) iGeoLocationView).googleSignOut();
                     } else if (mLoginType.equals("fb")) {
-                        ((BaseActivity) iGeoLocationView.getActivity()).fbSignOut();
+                        ((BaseFragment) iGeoLocationView).fbSignOut();
                     } else {
                         Log.e(TAG, "phone logout");
-                        ((BaseActivity) iGeoLocationView.getActivity()).redirectToAuth();
+                        ((BaseFragment) iGeoLocationView).redirectToAuth();
                     }
                 } else {
                     iGeoLocationView.signOut();
@@ -533,5 +611,6 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
             }
         }
     }
+
 }
 

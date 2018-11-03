@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    tools:context="com.footprints.view.GeoLocationFragment">
+    android:background="@color/textColorPrimary"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp72"
+        android:layout_height="@dimen/dp55"
         android:layout_alignParentTop="true"
         android:background="#424242"
         android:fitsSystemWindows="true"
-        android:visibility="gone"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -25,24 +24,22 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <Space
-                android:layout_width="@dimen/dp12"
-                android:layout_height="wrap_content"
-                android:layout_weight="@integer/w0.2" />
-
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_title"
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:id="@+id/tv_profile_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="@integer/w0.5"
-                android:textSize="@dimen/sp_12"
+                android:text="@string/footprints"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
                 app:fontFamily="@font/antaro" />
 
             <Space
                 android:layout_width="@dimen/dp12"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/w0.2" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/iv_delete"
@@ -52,7 +49,7 @@
                 android:src="@drawable/ic_waste_black" />
 
             <Space
-                android:layout_width="@dimen/dp12"
+                android:layout_width="@dimen/dp16"
                 android:layout_height="wrap_content" />
 
             <android.support.v7.widget.AppCompatImageView
@@ -66,12 +63,9 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_geo_coordinates"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/my_toolbar"
-        android:orientation="vertical"
-        app:fontFamily="@font/cac_champagne" />
-
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar" />
 </RelativeLayout>

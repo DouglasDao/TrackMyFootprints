@@ -19,7 +19,7 @@ import com.footprints.common.Constants;
 import com.footprints.util.GeoEditText;
 import com.footprints.util.SharedPref;
 import com.footprints.view.BaseActivity;
-import com.footprints.view.GeoLocationActivity;
+import com.footprints.view.HomeActivity;
 import com.footprints.view.iview.IGeoAuthView;
 import com.footprints.viewmodel.iviewmodel.IGeoAuthViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -100,7 +100,7 @@ public class GeoAuthViewModel extends BaseViewModel implements IGeoAuthViewModel
         /*Log.e(TAG,"FLAG : "+SharedPref.getInstance().getBooleanValue(iGeoAuthView.getActivity(), Constants.SharedPrefKey.LOGIN_FLAG));
 
         if (SharedPref.getInstance().getBooleanValue(iGeoAuthView.getActivity(), Constants.SharedPrefKey.LOGIN_FLAG)) {
-            iGeoAuthView.navigateToHome(new Intent(iGeoAuthView.getActivity(), GeoLocationActivity.class));
+            iGeoAuthView.navigateToHome(new Intent(iGeoAuthView.getActivity(), GeoLocationFragment.class));
         }*/
     }
 
@@ -129,7 +129,7 @@ public class GeoAuthViewModel extends BaseViewModel implements IGeoAuthViewModel
                         iGeoAuthView.closeLoadingDialog();
                         FirebaseUser user = getFirebaseAuth().getCurrentUser();
                         if (user != null) {
-                            Intent intent = new Intent(iGeoAuthView.getActivity(), GeoLocationActivity.class);
+                            Intent intent = new Intent(iGeoAuthView.getActivity(), HomeActivity.class);
                             intent.putExtra(Constants.BundleKey.PHOTO_URI, Objects.requireNonNull(user.getPhotoUrl()).toString());
                             intent.putExtra(Constants.BundleKey.USER, user);
                             intent.putExtra(Constants.BundleKey.LOGIN_TYPE, "google");
@@ -175,7 +175,7 @@ public class GeoAuthViewModel extends BaseViewModel implements IGeoAuthViewModel
                         iGeoAuthView.closeLoadingDialog();
                         FirebaseUser user = getFirebaseAuth().getCurrentUser();
                         if (user != null) {
-                            Intent intent = new Intent(iGeoAuthView.getActivity(), GeoLocationActivity.class);
+                            Intent intent = new Intent(iGeoAuthView.getActivity(), HomeActivity.class);
                             if (user.getPhotoUrl() != null && !user.getPhotoUrl().toString().isEmpty()) {
                                 intent.putExtra(Constants.BundleKey.PHOTO_URI, user.getPhotoUrl().toString());
                             }
@@ -239,7 +239,7 @@ public class GeoAuthViewModel extends BaseViewModel implements IGeoAuthViewModel
                         iGeoAuthView.closeLoadingDialog();
                         FirebaseUser user = getFirebaseAuth().getCurrentUser();
                         if (user != null) {
-                            Intent intent = new Intent(iGeoAuthView.getActivity(), GeoLocationActivity.class);
+                            Intent intent = new Intent(iGeoAuthView.getActivity(), HomeActivity.class);
                             intent.putExtra(Constants.BundleKey.USER, user);
                             intent.putExtra(Constants.BundleKey.USER_NAME, userName);
                             intent.putExtra(Constants.BundleKey.LOGIN_TYPE, "phone");
