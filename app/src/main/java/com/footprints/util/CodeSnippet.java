@@ -76,8 +76,8 @@ public class CodeSnippet {
         context.startActivity(getSettingsIntent(settings));
     }
 
-    private void startActivityBySettings(Context context, Intent intent) {
-        context.startActivity(intent);
+    private void startActivityBySettings(Context context, Intent intPackageInfoent) {
+        context.startActivity(intPackageInfoent);
     }
 
     public boolean isLocationPermissionGranted(Context mContext) {

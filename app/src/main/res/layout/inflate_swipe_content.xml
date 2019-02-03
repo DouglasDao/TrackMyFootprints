@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeMenuLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dp12"
+    app:cardElevation="@dimen/dp4"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    tools:showIn="@layout/inflate_location_details">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:padding="@dimen/dp4">
+
+        <LinearLayout
+            android:id="@+id/loc_img_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_Location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp12"
+                android:layout_marginTop="@dimen/dp8"
+                android:layout_marginEnd="@dimen/dp12"
+                android:layout_weight="@integer/w0.6"
+                android:src="@drawable/ic_location" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/iv_loc_pos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp12"
+                android:layout_marginTop="@dimen/dp8"
+                android:layout_marginEnd="@dimen/dp12"
+                android:layout_weight="@integer/w0.4" />
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/space_1"
+            android:layout_width="@dimen/dp16"
+            android:layout_height="0dp"
+            android:layout_toStartOf="@id/geo_layout"
+            android:layout_toEndOf="@+id/loc_img_container"
+            android:background="@color/colorAccent" />
+
+        <LinearLayout
+            android:id="@+id/geo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/loc_img_container"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_place_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/w0.6"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
+                app:fontFamily="@font/cac_champagne" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_geo_coordinates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp8"
+                android:layout_weight="@integer/w0.4"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorMaroon"
+                app:fontFamily="monospace" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/iv_loc_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp8"
+                android:fontFamily="@font/paranoid"
+                android:gravity="end"
+                android:textSize="@dimen/sp_12" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

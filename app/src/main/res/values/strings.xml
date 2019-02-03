@@ -6,6 +6,7 @@
     <string name="facebook_app_id">2329362793954469</string>
     <string name="fb_login_protocol_scheme">fb2329362793954469</string>
     <string name="exit_alert_msg">Do you want to exit App ?</string>
+    <string name="remove_loc">Are you sure want to remove ?</string>
     <string name="yes">Yes</string>
     <string name="verify">Verify</string>
     <string name="ok">Ok</string>

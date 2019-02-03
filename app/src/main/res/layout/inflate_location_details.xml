@@ -1,100 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/dp12"
-    app:cardElevation="@dimen/dp4"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/view_list_repo_action_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center|start"
-        android:padding="@dimen/dp4">
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/dp12"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/loc_img_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:scaleType="center"
+            android:src="@drawable/ic_delete" />
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/iv_Location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp12"
-                android:layout_marginTop="@dimen/dp8"
-                android:layout_marginEnd="@dimen/dp12"
-                android:layout_weight="@integer/w0.6"
-                android:src="@drawable/ic_location" />
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:scaleType="center"
+            android:src="@drawable/ic_share" />
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/iv_loc_pos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp12"
-                android:layout_marginTop="@dimen/dp8"
-                android:layout_marginEnd="@dimen/dp12"
-                android:layout_weight="@integer/w0.4" />
-        </LinearLayout>
+    </LinearLayout>
 
+    <include layout="@layout/inflate_swipe_content" />
 
-        <View
-            android:id="@+id/space_1"
-            android:layout_width="@dimen/dp16"
-            android:layout_height="0dp"
-            android:background="@color/colorAccent"
-            android:layout_toEndOf="@+id/loc_img_container"
-            android:layout_toStartOf="@id/geo_layout" />
-
-        <LinearLayout
-            android:id="@+id/geo_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/loc_img_container"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_place_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="@integer/w0.6"
-                android:gravity="center_horizontal"
-                android:textSize="@dimen/sp_16"
-                android:textStyle="bold"
-                app:fontFamily="@font/cac_champagne"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorWhite" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_geo_coordinates"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="@integer/w0.4"
-                android:layout_marginTop="@dimen/dp8"
-                android:gravity="center_horizontal"
-                android:textColor="@color/colorMaroon"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:fontFamily="monospace" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/iv_loc_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/paranoid"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp8"
-                android:gravity="end"
-                android:textSize="@dimen/sp_12" />
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</android.support.v7.widget.CardView>
-
-
+</FrameLayout>

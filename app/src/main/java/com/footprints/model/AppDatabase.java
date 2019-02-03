@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 /**
- * Created by Dell on 27-05-2018.
+ * Created by Douglas on 27-05-2018.
  */
 @Database(entities = {GeoData.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {

@@ -26,7 +26,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
-
 public class GeoAuthActivity extends BaseActivity implements IGeoAuthView {
 
     @BindView(R.id.iv_facebook_signin)
@@ -39,6 +38,7 @@ public class GeoAuthActivity extends BaseActivity implements IGeoAuthView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         iGeoAuthViewModel = new GeoAuthViewModel(getActivity().getApplication(), this);
         iGeoAuthViewModel.onCreateViewModel(getIntent().getExtras());
     }

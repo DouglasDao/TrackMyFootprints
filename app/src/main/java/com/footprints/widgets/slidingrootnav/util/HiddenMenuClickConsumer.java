@@ -7,10 +7,6 @@ import android.view.View;
 import com.footprints.widgets.slidingrootnav.SlidingRootNavLayout;
 
 
-/**
- * Created by yarolegovich on 26.03.2017.
- */
-
 public class HiddenMenuClickConsumer extends View {
 
     private SlidingRootNavLayout menuHost;

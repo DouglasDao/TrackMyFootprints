@@ -10,7 +10,7 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 /**
- * Created by Dell on 27-05-2018.
+ * Created by Douglas on 27-05-2018.
  */
 @Dao
 public interface GeoDataDao {

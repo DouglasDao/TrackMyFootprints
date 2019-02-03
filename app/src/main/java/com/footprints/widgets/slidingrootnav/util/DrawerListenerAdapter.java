@@ -7,10 +7,6 @@ import com.footprints.widgets.slidingrootnav.callback.DragListener;
 import com.footprints.widgets.slidingrootnav.callback.DragStateListener;
 
 
-/**
- * Created by yarolegovich on 26.03.2017.
- */
-
 public class DrawerListenerAdapter implements DragListener, DragStateListener {
 
     private DrawerLayout.DrawerListener adaptee;

@@ -30,6 +30,7 @@ public class SimpleItem extends DrawerItem<SimpleItem.ViewHolder> {
     public ViewHolder createViewHolder(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.item_option, parent, false);
+
         return new ViewHolder(v);
     }
 

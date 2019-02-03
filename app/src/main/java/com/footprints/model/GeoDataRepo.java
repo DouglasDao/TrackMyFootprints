@@ -10,7 +10,7 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 /**
- * Created by Dell on 27-05-2018.
+ * Created by Douglas on 27-05-2018.
  */
 
 public class GeoDataRepo {

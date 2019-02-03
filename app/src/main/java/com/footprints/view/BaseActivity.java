@@ -68,6 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         injectViews();
         googleLoginSetup();
+        getFbKeyHash();
     }
 
     private void googleLoginSetup() {

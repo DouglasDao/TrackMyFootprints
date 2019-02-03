@@ -84,7 +84,7 @@ public class HomeActivity extends BaseActivity implements DrawerAdapter.OnItemSe
     public void setUserInfo(String name, Uri photo) {
         AppCompatImageView mProfilePic = findViewById(R.id.iv_profile_pic);
         AppCompatTextView mPersonName = findViewById(R.id.tv_person_name);
-        Log.e(TAG, "URI photo" + photo);
+        Log.e(TAG, "URI photo " + photo);
         mPersonName.setText(name);
         Glide.with(this)
                 .load(photo)

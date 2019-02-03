@@ -15,6 +15,10 @@ public interface Constants {
         int FB_SIGN_IN = 9002;
     }
 
+    interface Values{
+
+    }
+
     interface BundleKey {
         String USER_EMAIL = "USER_EMAIL";
         String USER_NAME = "USER_NAME";

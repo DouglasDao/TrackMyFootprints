@@ -37,10 +37,6 @@ import com.footprints.view.iview.IGeoLocationView;
 import com.footprints.viewmodel.iviewmodel.IGeoLocationViewModel;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityTransition;
-import com.google.android.gms.location.ActivityTransitionRequest;
-import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
@@ -51,13 +47,11 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +59,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Created by Dell on 27-05-2018.
+ * Created by Douglas on 27-05-2018.
  */
 
 public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationViewModel {
@@ -131,8 +125,7 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
                         setAddressWithLocation(newLatitude, newLongitude);
                 }
 
-                if (!oldLatitude.isEmpty()
-                        && !oldLongitude.isEmpty()) {
+                if (!oldLatitude.isEmpty() && !oldLongitude.isEmpty()) {
                     Log.e(TAG, "Previous Latitude :" + SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LAT_KEY));
                     Log.e(TAG, "Previous Longitude :" + SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LNG_KEY));
                     String prevLatitude = SharedPref.getInstance().getStringValue(mContext, Constants.SharedPrefKey.LAT_KEY);
@@ -185,51 +178,6 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
         checkForGPSStatus();
         setPhoneState();
         intentFromAuth(bundle);
-        //startActivityRecognition();
-    }
-
-    private void startActivityRecognition() {
-        ActivityTransitionRequest request = new ActivityTransitionRequest(getActivityTransition());
-        Task<Void> task = ActivityRecognition.getClient(iGeoLocationView.getActivity()).requestActivityTransitionUpdates(request, null);
-        task.addOnCompleteListener(iGeoLocationView.getActivity(), new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.e(TAG, "Task Result : " + task.getResult());
-                } else {
-                    Log.e(TAG, "Task Failed..");
-                }
-            }
-        });
-    }
-
-    private List<ActivityTransition> getActivityTransition() {
-        List<ActivityTransition> transitions = new ArrayList<>();
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-        return transitions;
     }
 
     private void intentFromAuth(Bundle mBundle) {
@@ -611,6 +559,5 @@ public class GeoLocationViewModel extends BaseViewModel implements IGeoLocationV
             }
         }
     }
-
 }
 

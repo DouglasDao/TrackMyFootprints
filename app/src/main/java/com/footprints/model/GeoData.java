@@ -16,9 +16,6 @@ public class GeoData {
     @ColumnInfo(name = "address")
     private String address;
 
-    public GeoData() {
-    }
-
     public GeoData(Double latit, Double longit, String address) {
         this.latit = latit;
         this.longit = longit;

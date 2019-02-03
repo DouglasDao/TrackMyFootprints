@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_width="@dimen/dp200"
+    android:layout_height="@dimen/dp48"
     android:background="@drawable/shape_square"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp">
+    android:paddingLeft="@dimen/dp18"
+    android:paddingRight="@dimen/dp18"
+    android:weightSum="1">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="@integer/w0.1" />
 
     <Space
-        android:layout_width="12dp"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="@integer/w0.1" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="@integer/w0.8"
+        android:gravity="center_horizontal"
         android:textColor="@color/colorDarkMaroon"
         android:textStyle="bold" />
 

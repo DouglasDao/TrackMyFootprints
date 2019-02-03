@@ -27,10 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by yarolegovich on 24.03.2017.
- */
-
 public class SlidingRootNavBuilder {
 
     private static final float DEFAULT_END_SCALE = 0.65f;
